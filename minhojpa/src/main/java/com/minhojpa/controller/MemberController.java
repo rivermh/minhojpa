@@ -3,18 +3,22 @@ package com.minhojpa.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.minhojpa.entity.Member;
 import com.minhojpa.service.MemberService;
 
-@RestController // 이 클래스가 RESTAPI 처리용 컨트롤러임을 나타냄
+import lombok.extern.slf4j.Slf4j;
+
+@Controller // 이 클래스가 RESTAPI 처리용 컨트롤러임을 나타냄
 @RequestMapping("/members") // /members로 시작하는 URL 요청을 이 컨트롤러에서 처리하겠다는 의미
+@Slf4j
 //HTTP 요청 Controller > Service > Repository > DB에서 데이터 가져옴 > Service > Controller > HTTP 응답 (JSON 등)
 public class MemberController {
 	
@@ -25,8 +29,14 @@ public class MemberController {
 		this.memberService = memberService;
 	}
 	
+	@GetMapping("/")
+	public String home() {
+		log.info("홈페이지 접근");
+		return "home";
+	}
+	
 	//전체 회원 조회
-	@GetMapping // GET 요청 모든 회원을 리스트로 반환
+	@GetMapping("/api") // GET 요청 모든 회원을 리스트로 반환
 	public List<Member> getAllMember(){
 		return memberService.findAllmembers();
 	}
@@ -39,7 +49,24 @@ public class MemberController {
 	
 	// 회원 저장
 	@PostMapping //POST 요청으로 JSON 형식의 회원 데이터를 넘기면, 그걸 @RequstBody로 받아서 저장
-	public Member createMember(@RequestBody Member member) {
-		return memberService.saveMember(member);
+	public String createMember(@RequestParam String name, @RequestParam String email) {
+		Member member = new Member();
+		member.setName(name);
+		member.setEmail(email);
+		memberService.saveMember(member);
+		log.info("회원 저장됨 : " + name +" ," + email);
+		return "redirect:/members";
+	}
+	
+	@GetMapping("/new")
+	public String showCreateForm() {
+		return "createMember"; //templates/createMember.html을 의미
+	}
+	
+	@GetMapping
+	public String getAllMembers(Model model) {
+		List<Member> members = memberService.findAllmembers();
+		model.addAttribute("members", members);
+		return "memberList";
 	}
 }

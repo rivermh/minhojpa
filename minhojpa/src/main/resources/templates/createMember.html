@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원 등록</title>
+</head>
+<body>
+	<h1>회원 등록 폼</h1>
+	<form action="/members" method="post">
+		이름: <input type="text" name="name" required><br>
+		이메일: <input type="email" name="email" required><br>
+		<input type="submit" value="등록">
+	</form>
+</body>
+</html>

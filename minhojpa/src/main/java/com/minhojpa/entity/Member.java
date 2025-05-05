@@ -1,11 +1,10 @@
 package com.minhojpa.entity;
 
-import org.springframework.data.annotation.Id;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity // 이 Member 클래스가 DB 테이블과 매핑된다는 뜻
 public class Member {
@@ -15,6 +14,9 @@ public class Member {
 	
 	@Column(nullable = false) // name은 NOT NULL로 설정 이 컬럼은 null을 허용하지 않음
 	private String name;
+	
+	@Column(nullable = false, unique = true) // 이메일은 중복 없도록 설정
+	private String email;
 	
 	// 기본 생성자 (JPA는 기본 생성자가 꼭 필요함)
 	public Member() {
@@ -32,4 +34,13 @@ public class Member {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 }
