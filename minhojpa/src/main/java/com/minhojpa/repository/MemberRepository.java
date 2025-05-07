@@ -1,5 +1,7 @@
 package com.minhojpa.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	findAll() 모든 엔티티를 조회
 	deleteById() ID로 엔티티를 삭제
 	count() 엔티티 개수 조회*/
+	
+	Optional<Member> findByEmail(String email); //이메일로 회원 찾기
 }

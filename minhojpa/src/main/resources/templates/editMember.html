@@ -8,9 +8,10 @@
 	<h1>회원 수정 폼</h1>
 	<form th:action="@{/members/edit}" method="post">
 		<input type="hidden" name="id" th:value="${member.id}"/>
-			이름: <input type="text" name="name" th:value="${member.name}" required><br>
-			이메일: <input type="email" name="email" th:value="${member.email}" required><br>
-			<input type="submit" value="수정">
+		이름: <input type="text" name="name" th:value="${member.name}" required><br>
+		이메일: <input type="email" name="email" th:value="${member.email}" required><br>
+		비밀번호: <input type="password" name="password" required><br>
+		<input type="submit" value="수정">
 	</form>
 	<a href="/members">목록으로</a>
 </body>

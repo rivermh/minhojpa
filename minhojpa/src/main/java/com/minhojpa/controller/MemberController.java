@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,12 +63,13 @@ public class MemberController {
 
     // 회원 등록 처리
     @PostMapping("/members") // form의 action="/members", method="post"와 매칭
-    public String createMember(@RequestParam String name, @RequestParam String email) {
+    public String createMember(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
         Member member = new Member(); // 새로운 회원 객체 생성
         member.setName(name); // 이름 설정
+        member.setPassword(password); //비밀번호 설정
         member.setEmail(email); // 이메일 설정
         memberService.saveMember(member); // 서비스에 저장 요청
-        log.info("회원 저장됨 : {}, {}", name, email);
+        log.info("회원 저장됨 : {}, {}",name, email, password);
         return "redirect:/members"; // 등록 후 회원 목록으로 리디렉션
     }
 
@@ -81,9 +83,10 @@ public class MemberController {
 
     // 회원 수정 처리
     @PostMapping("/members/edit")
-    public String updateMember(@RequestParam Long id, @RequestParam String name, @RequestParam String email) {
+    public String updateMember(@RequestParam Long id, @RequestParam String email, @RequestParam String password, @RequestParam String name) {
         Member member = memberService.findMemberById(id); // 기존 회원 조회
-        member.setName(name); // 이름 수정
+        member.setName(name);
+        member.setPassword(password); // 이름 수정
         member.setEmail(email); // 이메일 수정
         memberService.saveMember(member); // 수정된 회원 저장
         log.info("회원 수정됨: {}", member);
@@ -96,5 +99,15 @@ public class MemberController {
         memberService.deleteMember(id); // 서비스에서 삭제 처리
         log.info("회원 삭제됨: id={}", id);
         return "redirect:/members"; // 삭제 후 목록으로 이동
+    }
+    
+    // 마이페이지
+    @GetMapping("/mypage")
+    public String myPage(@ModelAttribute("loginMember") Member loginMember, Model model) {
+    	if(loginMember == null) {
+    		return "redirect:/login"; //로그인이 안 되어 있으면 로그인 페이지로
+    	}
+    	model.addAttribute("member", loginMember); // 마이페이지에 로그인된 회원 정보 전달
+    	return "mypage";
     }
 }

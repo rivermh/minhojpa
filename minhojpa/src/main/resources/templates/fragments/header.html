@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:fragment="fragment"> <!-- header.html 안에 무조건 fragment가 있어야 다른곳에서 사용 가능 -->
+    <div th:if="${loginMember != null}">
+        <p>안녕하세요, <span th:text="${loginMember.name}">회원</span>님!</p>
+        <a th:href="@{/mypage}">마이페이지</a> |
+        <a th:href="@{/logout}">로그아웃</a>
+    </div>
+    <div th:if="${loginMember == null}">
+        <a th:href="@{/login}">로그인</a> |
+        <a th:href="@{/members/new}">회원가입</a>
+    </div>
+    <hr/>
+</div>
+
+</body>
+</html>

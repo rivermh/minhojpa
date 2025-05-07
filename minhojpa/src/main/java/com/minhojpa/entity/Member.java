@@ -18,6 +18,9 @@ public class Member {
 	@Column(nullable = false, unique = true) // 이메일은 중복 없도록 설정
 	private String email;
 	
+	@Column(nullable = false)
+	private String password; // 비밀번호 필드 추가
+	
 	// 기본 생성자 (JPA는 기본 생성자가 꼭 필요함)
 	public Member() {
 	}
@@ -41,6 +44,14 @@ public class Member {
 	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }
