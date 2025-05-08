@@ -103,11 +103,11 @@ public class MemberController {
     
     // 마이페이지
     @GetMapping("/mypage")
-    public String myPage(@ModelAttribute("loginMember") Member loginMember, Model model) {
+    public String myPage(Member loginMember, Model model) {
     	if(loginMember == null) {
     		return "redirect:/login"; //로그인이 안 되어 있으면 로그인 페이지로
     	}
     	model.addAttribute("member", loginMember); // 마이페이지에 로그인된 회원 정보 전달
-    	return "mypage";
+    	return "myPage";
     }
 }
