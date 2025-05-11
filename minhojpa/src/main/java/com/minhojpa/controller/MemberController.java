@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.minhojpa.entity.Member;
 import com.minhojpa.service.MemberService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller // 이 클래스가 웹 요청을 처리하는 컨트롤러임을 나타냄
@@ -63,7 +64,9 @@ public class MemberController {
 
     // 회원 등록 처리
     @PostMapping("/members") // form의 action="/members", method="post"와 매칭
-    public String createMember(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
+    public String createMember(@RequestParam String name,
+    						   @RequestParam String email,
+    						   @RequestParam String password) {
         Member member = new Member(); // 새로운 회원 객체 생성
         member.setName(name); // 이름 설정
         member.setPassword(password); //비밀번호 설정
@@ -83,7 +86,10 @@ public class MemberController {
 
     // 회원 수정 처리
     @PostMapping("/members/edit")
-    public String updateMember(@RequestParam Long id, @RequestParam String email, @RequestParam String password, @RequestParam String name) {
+    public String updateMember(@RequestParam Long id,
+    						   @RequestParam String email,
+    						   @RequestParam String password,
+    						   @RequestParam String name) {
         Member member = memberService.findMemberById(id); // 기존 회원 조회
         member.setName(name);
         member.setPassword(password); // 이름 수정
@@ -103,11 +109,22 @@ public class MemberController {
     
     // 마이페이지
     @GetMapping("/mypage")
-    public String myPage(Member loginMember, Model model) {
-    	if(loginMember == null) {
-    		return "redirect:/login"; //로그인이 안 되어 있으면 로그인 페이지로
-    	}
-    	model.addAttribute("member", loginMember); // 마이페이지에 로그인된 회원 정보 전달
-    	return "myPage";
+    public String myPage(HttpSession session, Model model) {
+        Member loginMember = (Member) session.getAttribute("loginMember"); // 세션에서 꺼냄
+        if (loginMember == null) {
+            return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
+        }
+        model.addAttribute("member", loginMember); // 뷰에 전달
+        return "myPage"; // templates/myPage.html
     }
 }
+
+/*@RequestParam은 HTTP 요청 파라미터를 메서드의 파라미터에 바인딩해주는 어노테이션이다.
+주로 HTML 폼 또는 URL 쿼리스트링의 name 속성과 매칭하여 값을 가져온다.
+예: /hello?name=Minho → @RequestParam("name") String name 에 "Minho" 값이 자동으로 들어온다.
+파라미터 이름과 변수명이 같다면 ("name") 생략도 가능하며, 기본값이나 필수 여부도 설정할 수 있다.*/
+
+
+//@GetMapping
+//@PostMapping
+//@PathVariable
