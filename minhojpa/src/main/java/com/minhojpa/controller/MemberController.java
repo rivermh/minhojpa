@@ -31,8 +31,12 @@ public class MemberController {
 
     // 홈 페이지
     @GetMapping("/") // http://localhost:8080/
-    public String home() {
-        log.info("홈페이지 접근");
+    public String home(HttpSession session, Model model) {
+    	Member loginMember = (Member) session.getAttribute("loginMember");
+    	
+    	if(loginMember != null) {
+    		model.addAttribute("loginMember", loginMember);
+    	}
         return "home"; // templates/home.html 반환
     }
 

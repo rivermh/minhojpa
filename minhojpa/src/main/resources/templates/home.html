@@ -5,40 +5,69 @@
     <title>홈페이지</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+        }
+        .container {
+            max-width: 800px;
+            margin: 60px auto;
             padding: 40px;
-            background-color: #f4f4f4;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 12px;
         }
         h1 {
+            font-size: 2.5em;
             color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1em;
+            color: #666;
         }
         .btn-container {
             margin-top: 30px;
         }
         .btn {
             display: inline-block;
-            margin: 10px;
-            padding: 12px 20px;
-            background-color: #4CAF50;
+            margin: 12px 10px 0 0;
+            padding: 14px 22px;
+            background-color: #3498db;
             color: white;
+            font-size: 1em;
             text-decoration: none;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .btn:hover {
-            background-color: #45a049;
+            background-color: #2980b9;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-	<div th:replace="fragments/header :: fragment"></div>
-    <h1>📌 회원 관리 시스템</h1>
-    <p>아래 버튼을 클릭하여 원하는 기능으로 이동하세요.</p>
-    <div class="btn-container">
-        <a class="btn" th:href="@{/members/new}">회원 등록</a>
-        <a class="btn" th:href="@{/members}">회원 목록 보기</a>
-        <a class="btn" href="/api" target="_blank">[API] 전체 회원 JSON</a>
-    </div>
+    <div class="container">
+        <h1>📌 회원 관리 시스템</h1>
 
+        <div th:if="${loginMember != null}">
+            <p><strong th:text="${loginMember.name}">회원</strong>님, 환영합니다!</p>
+            <div class="btn-container">
+                <a class="btn" th:href="@{/mypage}">마이페이지</a>
+                <a class="btn" th:href="@{/logout}">로그아웃</a>
+                <a class="btn" th:href="@{/posts}">게시글 목록</a>
+            </div>
+        </div>
+
+        <div th:if="${loginMember == null}">
+            <p>아직 로그인하지 않으셨네요! 아래에서 로그인하거나 회원가입 해주세요.</p>
+            <div class="btn-container">
+                <a class="btn" th:href="@{/login}">로그인</a>
+                <a class="btn" th:href="@{/members/new}">회원가입</a>
+                <a class="btn" th:href="@{/posts}">게시글 목록</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
