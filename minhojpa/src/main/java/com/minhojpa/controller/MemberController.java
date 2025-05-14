@@ -40,18 +40,6 @@ public class MemberController {
         return "home"; // templates/home.html 반환
     }
 
-    // JSON 형식으로 전체 회원 조회 (REST API 용도)
-    @GetMapping("/api/members")
-    public List<Member> getAllMembersApi() {
-        return memberService.findAllmembers();
-    }
-
-    // JSON 형식으로 특정 회원 조회
-    @GetMapping("/api/members/{id}")
-    public Member getMemberByIdApi(@PathVariable Long id) {
-        return memberService.findMemberById(id);
-    }
-
     // 전체 회원 조회 (화면용)
     @GetMapping("/members") // http://localhost:8080/members
     public String getAllMembers(Model model) {
