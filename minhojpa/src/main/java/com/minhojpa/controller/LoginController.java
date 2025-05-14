@@ -38,6 +38,7 @@ public class LoginController {
                         Model model) {
 
         Member loginMember = loginService.login(email, password); 
+        // Member 타입 Member 클래스의 객체를 담기 위한 타입
         if (loginMember == null) {
             model.addAttribute("loginError", "이메일 또는 비밀번호가 올바르지 않습니다.");
             return "login"; // 로그인 실패 시 로그인 페이지로 돌아감

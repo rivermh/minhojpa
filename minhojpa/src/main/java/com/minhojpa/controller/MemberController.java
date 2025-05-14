@@ -23,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 
     private final MemberService memberService;
+    // MemberService 타입의 객체를 주입받기 위한 필드
+    // final로 선언하여 생성자에서 반드시 초기화되도록 강제
 
     @Autowired // 스프링이 MemberService 빈을 주입해줌 (DI)
     public MemberController(MemberService memberService) {
@@ -32,10 +34,11 @@ public class MemberController {
     // 홈 페이지
     @GetMapping("/") // http://localhost:8080/
     public String home(HttpSession session, Model model) {
+    	// HttpSession : 현재 로그인한 사용자의 세션 정보를 가져올 수 있는 객체 ( 예: 로그인 여부 확인 등)
+    	// Model : 컨트롤러에서 뷰로 데이터를 전달할 때 사용하는 객체
     	Member loginMember = (Member) session.getAttribute("loginMember");
-    	
     	if(loginMember != null) {
-    		model.addAttribute("loginMember", loginMember);
+    		model.addAttribute("loginMember", loginMember); // loginMember라는 이름으로 뷰에 전달
     	}
         return "home"; // templates/home.html 반환
     }
@@ -111,11 +114,29 @@ public class MemberController {
     }
 }
 
-/*@RequestParam은 HTTP 요청 파라미터를 메서드의 파라미터에 바인딩해주는 어노테이션이다.
-주로 HTML 폼 또는 URL 쿼리스트링의 name 속성과 매칭하여 값을 가져온다.
-예: /hello?name=Minho → @RequestParam("name") String name 에 "Minho" 값이 자동으로 들어온다.
-파라미터 이름과 변수명이 같다면 ("name") 생략도 가능하며, 기본값이나 필수 여부도 설정할 수 있다.*/
+/*@RequestParam은 HTTP 요청 파라미터를 메서드의 파라미터에 바인딩해주는 어노테이션
+주로 HTML 폼 또는 URL 쿼리스트링의 name 속성과 매칭하여 값을 가져옴
+예: /hello?name=Minho → @RequestParam("name") String name 에 "Minho" 값이 자동으로 들어옴
+파라미터 이름과 변수명이 같다면 ("name") 생략도 가능하며, 기본값이나 필수 여부도 설정할 수 있음
+*/
 
+/*
+HttpSession session
+현재 접속한 사용자와 관련된 세션 정보를 가져오는 매개변수
+로그인 사용자 정보를 session에 저장해두고, 다른 요청에서 이를 꺼내 쓸 수 있음
+예: session.getAttribute("loginMember")로 로그인 사용자 정보 가져오기
+
+Model model
+컨트롤러에서 뷰로 데이터를 전달할 때 사용하는 객체
+model.addAttribute("key", value) 형식으로 데이터 전달
+ */
+
+/*
+MemberService는 비즈니스 로직(회원 저장, 조회 등)을 처리하는 서비스 클래스
+이 필드는 컨트롤러가 서비스에 접근하기 위해 선언한 의존성이다
+final로 선언하여 생성자에서 반드시 주입받도록 보장함
+@Autowired가 붙은 생성자를 통해 스프링이 자동으로 주입해준다.
+*/
 
 //@GetMapping
 //@PostMapping
