@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <title>게시글 수정</title>
 </head>
 <body>
+    <h1>게시글 수정</h1>
+    <form th:action="@{'/posts/' + ${post.id} + '/edit'}" th:object="${post}" method="post">
+        <label>제목:</label>
+        <input type="text" th:field="*{title}" /><br/>
 
+        <label>내용:</label>
+        <textarea th:field="*{content}"></textarea><br/>
+
+        <button type="submit">수정 완료</button>
+    </form>
 </body>
 </html>

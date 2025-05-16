@@ -12,6 +12,15 @@
         <pre th:text="${post.content}">본문</pre>
     </div>
 
+    <!-- 수정/삭제 버튼 (작성자 본인에게만 보이게) -->
+    <div th:if="${session.loginMember != null and session.loginMember.id == post.writer.id}">
+        <a th:href="@{/posts/{id}/edit(id=${post.id})}">수정</a>
+
+        <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" style="display:inline;">
+            <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+        </form>
+    </div>
+
     <a th:href="@{/posts}">목록으로</a>
 </body>
 </html>

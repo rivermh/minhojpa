@@ -32,4 +32,9 @@ public class PostService {
 	public Post findById(Long id) {
 		return postRepository.findById(id).orElse(null);
 	}
+	
+	//게시글 삭제
+	public void deleteById(Long id) {
+		postRepository.deleteById(id);
+	}
 }

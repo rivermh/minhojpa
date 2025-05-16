@@ -103,4 +103,21 @@ public class PostController {
 		return "redirect:/posts/" + id;
 	}
 	
+	//게시글 삭제 처리하기
+	@PostMapping("/posts/{id}/delete")
+	public String deletePost(@PathVariable Long id, HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		
+		if(loginMember == null) {
+			return "redirect:/login";
+		}
+		
+		Post post = postService.findById(id);
+		if(post == null || !post.getWriter().getId().equals(loginMember.getId())) {
+			return "redirect:/posts";
+		}
+		
+		postService.deleteById(id);
+		return "redirect:/posts";
+	}
 }
