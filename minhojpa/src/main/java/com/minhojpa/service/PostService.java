@@ -24,7 +24,7 @@ public class PostService {
 	}
 	
 	//전체 게시글 조회
-	public List<Post> finaAll(){
+	public List<Post> findAll(){
 		return postRepository.findAll();
 	}
 	

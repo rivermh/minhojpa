@@ -6,10 +6,10 @@
 <body>
     <h1>게시글 작성</h1>
 
-    <form th:action="@{/posts}" method="post" th:object="${post}">
+    <form th:action="@{/posts}" method="post" th:object="${post}"> <!-- th:object="${post}" Post 객체 전체를 폼에 바인딩 -->
         <div>
             <label>제목</label>
-            <input type="text" th:field="*{title}" required />
+            <input type="text" th:field="*{title}" required /> <!-- th:field="*{title}" → Post.title 필드와 연결 -->
         </div>
         <div>
             <label>내용</label>

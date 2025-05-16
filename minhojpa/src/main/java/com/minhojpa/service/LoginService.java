@@ -23,6 +23,7 @@ public class LoginService {
      */
     public Member login(String email, String password) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        //Optional<Member>로 감싸서 null 처리에 안전하게 해줌
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             // 비밀번호 확인 (평문 비교)
