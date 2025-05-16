@@ -41,4 +41,4 @@ public class Comment {
  @Column(nullable = false) 댓글 내용은 반드시 입력되어야 함
  createdAt 댓글 생성 시간(현재 시간으로 기본 설정
  @ManyToOne 댓글은 하나의 게시글과 작성자를 가짐(Post, Member 와 다대일 관계)
- @fetch = FetchType.LAZY 지연 로딩 설정(댓글을 조회할 때 post나 member는 필요할 때만 로딩)*/
+ @fetch = FetchType.LAZY 지연 로딩 설정(댓글을 조회할 때 post나 member는 필요할 때만 로딩*/

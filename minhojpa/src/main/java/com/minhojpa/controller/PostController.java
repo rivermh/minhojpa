@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.minhojpa.entity.Comment;
 import com.minhojpa.entity.Member;
 import com.minhojpa.entity.Post;
 import com.minhojpa.service.PostService;
@@ -60,14 +61,20 @@ public class PostController {
 
 	// 게시글 상세보기
 	@GetMapping("/posts/{id}")
-	public String viewPost(@PathVariable Long id, Model model) {
+	public String viewPost(@PathVariable Long id, Model model, HttpSession session) {
 		//@PathVariable URL 속 값을 꺼내서 메서드 파라미터로 넘겨줌 {id} 부분을 변수 id에 자동 바인딩 해줌
 		//즉, /posts/5로 접속하면 id = 5로 바인딩되어서 postService.findById(5)가 호출됨
 		Post post = postService.findById(id);
 		if (post == null) {
 			return "redirect:/posts";
 		}
+		
+		//댓글 목록
+		List<Comment> comments = post.getComments(); // 양방향 관계
+
 		model.addAttribute("post", post);
+		model.addAttribute("comments", comments);
+		model.addAttribute("session", session); // Thymeleaf에서 session 쓰려면 필요
 		return "postDetail"; // templates/postDetail.html
 	}
 	
