@@ -91,7 +91,7 @@ public class MemberController {
     	if(loginMember == null) {
     		return "redirect:/login";
     	}
-    	
+    	 
         memberService.updateSelf(loginMember.getId(), formMember.getName(),
                                  formMember.getEmail(), formMember.getPassword());
         
