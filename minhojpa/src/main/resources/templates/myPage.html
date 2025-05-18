@@ -1,18 +1,25 @@
-<!-- templates/myPage.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>마이페이지</title>
+<meta charset="UTF-8">
+<title>마이페이지</title>
 </head>
 <body>
-    <h1>마이페이지</h1>
-    
-    <p><strong>이름:</strong> <span th:text="${member.name}"></span></p>
-    <p><strong>이메일:</strong> <span th:text="${member.email}"></span></p>
-    
-    <a th:href="@{/members/edit/{id}(id=${member.id})}">회원정보 수정</a> |
-    <a th:href="@{/members/delete/{id}(id=${member.id})}">회원 탈퇴</a> |
-    <a th:href="@{/}">홈으로</a>
+	<h1>마이페이지</h1>
+
+	<div>
+		<p>
+			<strong>이름:</strong> <span th:text="${member.name}">홍길동</span>
+		</p>
+		<p>
+			<strong>이메일:</strong> <span th:text="${member.email}">example@example.com</span>
+		</p>
+	</div>
+
+	<div>
+		<a th:href="@{/mypage/edit}">회원정보 수정</a> <a
+			th:href="@{/mypage/delete}" onclick="return confirm('정말 탈퇴하시겠습니까?');">회원
+			탈퇴</a> <a th:href="@{/}">홈으로</a>
+	</div>
 </body>
 </html>

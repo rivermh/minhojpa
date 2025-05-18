@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>회원 수정</title>
+  <meta charset="UTF-8">
+  <title>회원 정보 수정</title>
 </head>
 <body>
-	<h1>회원 수정 폼</h1>
-	<form th:action="@{/members/edit}" method="post">
-		<input type="hidden" name="id" th:value="${member.id}"/>
-		이름: <input type="text" name="name" th:value="${member.name}" required><br>
-		이메일: <input type="email" name="email" th:value="${member.email}" required><br>
-		비밀번호: <input type="password" name="password" required><br>
-		<input type="submit" value="수정">
-	</form>
-	<a href="/members">목록으로</a>
+  <h1>내 정보 수정</h1>
+
+  <form th:action="@{/mypage/edit}" method="post">
+    <!-- ID는 hidden으로 전송 -->
+    <input type="hidden" name="id" th:value="${member.id}" />
+
+    이름: <input type="text" name="name" th:value="${member.name}" required /><br>
+    이메일: <input type="email" name="email" th:value="${member.email}" required /><br>
+    비밀번호: <input type="password" name="password" required /><br>
+
+    <input type="submit" value="수정" />
+  </form>
+
+  <a th:href="@{/mypage}">마이페이지로 돌아가기</a>
 </body>
 </html>

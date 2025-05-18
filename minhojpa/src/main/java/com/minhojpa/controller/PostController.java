@@ -83,7 +83,7 @@ public class PostController {
 	public String showEditForm(@PathVariable Long id, Model model) {
 		Post post = postService.findById(id);
 		if(post == null) {
-			return "redirect:/posts"; //존재하지 않는 게시글이면 목록으로
+			return "redirect:/posts"; 
 		}
 		model.addAttribute("post", post);
 		return "editPost";

@@ -20,4 +20,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	count() 엔티티 개수 조회*/
 	
 	Optional<Member> findByEmail(String email); //이메일로 회원 찾기
+	
 }

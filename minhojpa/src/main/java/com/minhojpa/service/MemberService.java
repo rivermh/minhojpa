@@ -39,4 +39,16 @@ public class MemberService {
 	public Member saveMember(Member member) {
 		return memberRepository.save(member); // 비밀번호 암호화 없이 저장
 	}
+	
+	// 마이페이지 회원 수정
+	public void updateSelf(Long id, String name, String email, String password) {
+		Optional<Member> optionalMember = memberRepository.findById(id);
+		if(optionalMember.isPresent()) {
+			Member member = optionalMember.get();
+			member.setName(name);
+			member.setEmail(email);
+			member.setPassword(password);
+			memberRepository.save(member);
+		}
+	}
 }
