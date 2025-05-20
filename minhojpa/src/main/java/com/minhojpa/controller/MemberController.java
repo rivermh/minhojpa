@@ -95,12 +95,12 @@ public class MemberController {
         memberService.updateSelf(loginMember.getId(), formMember.getName(),
                                  formMember.getEmail(), formMember.getPassword());
         
-        // 세션 정보 최신화
+        // 세션 정보 최신화 
         session.setAttribute("loginMember", memberService.findMemberById(loginMember.getId()));
         
         return "redirect:/mypage";
     }
-    
+     
     
     // 회원 삭제 처리
     @PostMapping("/mypage/delete")
@@ -125,7 +125,7 @@ public class MemberController {
         }
         model.addAttribute("member", loginMember); // 뷰에 전달
         return "myPage"; // templates/myPage.html
-    }
+    } 
 }
 
 /*
