@@ -90,7 +90,7 @@ public class MemberController {
     	Member loginMember = (Member) session.getAttribute("loginMember");
     	if(loginMember == null) {
     		return "redirect:/login";
-    	}
+    	} 
     	 
         memberService.updateSelf(loginMember.getId(), formMember.getName(),
                                  formMember.getEmail(), formMember.getPassword());
