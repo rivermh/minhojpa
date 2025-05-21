@@ -82,7 +82,7 @@ public class PostController {
 	@GetMapping("/posts/{id}/edit")
 	public String showEditForm(@PathVariable Long id, Model model) {
 		Post post = postService.findById(id);
-		if(post == null) {
+		if(post == null) { 
 			return "redirect:/posts"; 
 		}
 		model.addAttribute("post", post);
