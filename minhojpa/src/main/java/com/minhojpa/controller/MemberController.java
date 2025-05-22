@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.minhojpa.entity.Comment;
 import com.minhojpa.entity.Member;
+import com.minhojpa.service.CommentService;
 import com.minhojpa.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
@@ -23,10 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 
     private final MemberService memberService;
+    private final CommentService commentService;
 
     @Autowired // 스프링이 MemberService 빈을 주입해줌 (DI)
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, CommentService commentService) {
         this.memberService = memberService;
+        this.commentService = commentService;
     }
 
     // 홈 페이지
@@ -123,8 +127,10 @@ public class MemberController {
         if (loginMember == null) {
             return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
         }
+        
+        List<Comment> comments = commentService.findCommentsByWriter(loginMember);
         model.addAttribute("member", loginMember); // 뷰에 전달
-        model.addAttribute("posts", loginMember.getPosts());
+       // model.addAttribute("posts", loginMember.getPosts());
         model.addAttribute("comments", loginMember.getComments());
         return "myPage"; // templates/myPage.html
     } 

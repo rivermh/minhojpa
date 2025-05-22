@@ -17,8 +17,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Member {
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-	private List<Post> posts = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();

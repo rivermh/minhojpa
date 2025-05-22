@@ -32,7 +32,7 @@ public class Comment {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
-	private Member writer;
+	private Member writer; // 의미 : 이 댓글의 작성자
 }
 
 /*
