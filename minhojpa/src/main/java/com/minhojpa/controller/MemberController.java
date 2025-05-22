@@ -124,6 +124,8 @@ public class MemberController {
             return "redirect:/login"; // 로그인 안 했으면 로그인 페이지로
         }
         model.addAttribute("member", loginMember); // 뷰에 전달
+        model.addAttribute("posts", loginMember.getPosts());
+        model.addAttribute("comments", loginMember.getComments());
         return "myPage"; // templates/myPage.html
     } 
 }
