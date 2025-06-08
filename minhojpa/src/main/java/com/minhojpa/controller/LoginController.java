@@ -48,7 +48,7 @@ public class LoginController {
         session.setAttribute("loginMember", loginMember); // 로그인된 회원을 세션에 저장
         log.info("로그인 성공: {}", loginMember);
         return "redirect:/"; // 로그인 후 홈으로 리디렉션
-    }
+    } 
 
     // 로그아웃 처리
     @GetMapping("/logout")
