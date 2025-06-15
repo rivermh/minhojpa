@@ -58,17 +58,10 @@ public class MemberController {
     }
 
     // 회원 등록 처리
-    @PostMapping("/members") // form의 action="/members", method="post"와 매칭
-    public String createMember(@RequestParam String name,
-    						   @RequestParam String email,
-    						   @RequestParam String password) {
-        Member member = new Member(); // 새로운 회원 객체 생성
-        member.setName(name); // 이름 설정
-        member.setPassword(password); //비밀번호 설정
-        member.setEmail(email); // 이메일 설정
-        memberService.saveMember(member); // 서비스에 저장 요청
-        log.info("회원 저장됨 : {}, {}",name, email, password);
-        return "redirect:/members"; // 등록 후 회원 목록으로 리디렉션
+    @PostMapping("/members")
+    public String createMember(@ModelAttribute Member member) {
+        memberService.saveMember(member);
+        return "redirect:/members";
     }
 
     // 회원 수정 폼 보여주기
@@ -81,24 +74,6 @@ public class MemberController {
     	model.addAttribute("member", loginMember); // editMember.html에서 th:field에 바인딩
     	return "editMember";
     }
-
-    // 회원 수정 POST
-    @PostMapping("/mypage/edit")
-    public String udpateMyInfo(@ModelAttribute Member formMember, HttpSession session) {
-    	Member loginMember = (Member) session.getAttribute("loginMember");
-    	if(loginMember == null) {
-    		return "redirect:/login";
-    	} 
-    	 
-        memberService.updateSelf(loginMember.getId(), formMember.getName(),
-                                 formMember.getEmail(), formMember.getPassword());
-        
-        // 세션 정보 최신화 
-        session.setAttribute("loginMember", memberService.findMemberById(loginMember.getId()));
-        
-        return "redirect:/mypage";
-    }
-     
     
     // 회원 삭제 처리
     @PostMapping("/mypage/delete")
@@ -128,6 +103,22 @@ public class MemberController {
         model.addAttribute("comments", loginMember.getComments());
         return "myPage"; // templates/myPage.html
     } 
+    
+    // 회원 수정 POST
+    @PostMapping("/mypage/edit")
+    public String udpateMyInfo(@ModelAttribute Member formMember, HttpSession session) {
+    	Member loginMember = (Member) session.getAttribute("loginMember");
+    	if(loginMember == null) {
+    		return "redirect:/login";
+    	} 
+    	 
+        memberService.updateSelf(loginMember.getId(), formMember.getName(),
+                                 formMember.getEmail(), formMember.getPassword());      
+        // 세션 정보 최신화 
+        session.setAttribute("loginMember", memberService.findMemberById(loginMember.getId()));
+        return "redirect:/mypage";
+    }
+     
 }
 
 /*
@@ -174,3 +165,9 @@ setName("~~~"), setEmail("~~~@~~~") 이런 식으로 해당 객체에 setXXX 해
 Member 객체를 만들어서 그걸 formMember 매개변수로 넘겨줌
 즉, @modelAttribute는 이미 set까지 완성된 상태에서 formMember에 set이 들어있는 상태
 */
+
+/*
+view를 반환할때 String를 쓰는이유는 내가 설정한 뷰 이름을 Spring이 ViewResolver를 통해
+내부적으로 HTML로 매핑해서 렌더링해주기 때문에 컨트롤러에서 String을 반환한다.
+*/
+ 
