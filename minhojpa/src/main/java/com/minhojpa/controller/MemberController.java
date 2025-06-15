@@ -85,12 +85,6 @@ public class MemberController {
     // 회원 수정 POST
     @PostMapping("/mypage/edit")
     public String udpateMyInfo(@ModelAttribute Member formMember, HttpSession session) {
-    	/*@ModelAttribute를 쓰면 new Member() 객체를 하나 만든 다음 
-    	  폼에서 넘어온 값들 (name=~~~~, email=~~~@~~~등)을
-    	  setName("~~~"), setEmail("~~~@~~~") 이런 식으로 해당 객체에 setXXX 해줘서 완성된
-    	  Member 객체를 만들어서 그걸 formMember 매개변수로 넘겨줌
-    	  즉, @modelAttribute는 이미 set까지 완성된 상태에서 formMember에 set이 들어있는 상태
-    	*/
     	Member loginMember = (Member) session.getAttribute("loginMember");
     	if(loginMember == null) {
     		return "redirect:/login";
@@ -139,7 +133,7 @@ public class MemberController {
 /*
 @RequestParam
 - HTTP 요청의 쿼리 파라미터를 메서드 파라미터에 바인딩해주는 어노테이션
-- 주로 HTML 폼 입력값이나 URL의 쿼리스트링에서 값을 가져올 때 사용
+- 주로 HTML 폼 입력값이나 URL의 쿼리스트링에서 값을 가져올 때 사용 name 값
 - 예: /hello?name=Minho → @RequestParam("name") String name → "Minho"가 변수에 들어감
 - 파라미터 이름과 변수명이 같으면 ("name") 생략 가능
 - required, defaultValue 등 추가 설정도 가능
@@ -172,4 +166,11 @@ MemberService
 - 예: /members/delete/1 → @PathVariable Long id → id = 1
 - RESTful URL 설계에서 자주 사용됨 (리소스 식별용)
 - 경로 변수 이름과 파라미터 이름이 같으면 ("id") 생략 가능
+*/
+
+/*@ModelAttribute를 쓰면 new Member() 객체를 하나 만든 다음 
+폼에서 넘어온 값들 (name=~~~~, email=~~~@~~~등)을
+setName("~~~"), setEmail("~~~@~~~") 이런 식으로 해당 객체에 setXXX 해줘서 완성된
+Member 객체를 만들어서 그걸 formMember 매개변수로 넘겨줌
+즉, @modelAttribute는 이미 set까지 완성된 상태에서 formMember에 set이 들어있는 상태
 */
