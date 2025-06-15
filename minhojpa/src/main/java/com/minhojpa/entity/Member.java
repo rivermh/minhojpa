@@ -43,7 +43,7 @@ public class Member {
 		return id;
 	}
 	
-	public String getName() {
+	public String getName() { 
 		return name;
 	}
 	

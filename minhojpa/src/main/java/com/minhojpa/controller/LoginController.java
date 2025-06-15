@@ -36,7 +36,6 @@ public class LoginController {
                         @RequestParam String password,
                         HttpSession session,
                         Model model) {
-
         Member loginMember = loginService.login(email, password); 
         // Member 타입 Member 클래스의 객체를 담기 위한 타입
         if (loginMember == null) {
@@ -56,11 +55,5 @@ public class LoginController {
         session.invalidate(); // 세션 제거
         log.info("로그아웃 처리 완료");
         return "redirect:/"; // 로그아웃 후 홈으로 리디렉션
-    }
-
-    // 세션에 로그인 정보가 있는지 확인 (로그인 상태 체크용)
-    @ModelAttribute("loginMember")
-    public Member loginMember(HttpSession session) {
-        return (Member) session.getAttribute("loginMember"); // 세션에서 로그인된 회원 정보 반환
     }
 }

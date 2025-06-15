@@ -34,7 +34,6 @@ public class CommentController {
 	public String addComment(@RequestParam Long postId,
 	                         @RequestParam String content,
 	                         HttpSession session) {
-
 	    Member loginMember = (Member) session.getAttribute("loginMember");
 	    if (loginMember == null) {
 	        return "redirect:/login";

@@ -49,6 +49,8 @@ public class MemberService {
 			member.setEmail(email);
 			member.setPassword(password);
 			memberRepository.save(member);
+		}else {
+			
 		}
 	}
 }

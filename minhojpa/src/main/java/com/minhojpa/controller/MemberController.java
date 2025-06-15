@@ -88,7 +88,6 @@ public class MemberController {
         return "redirect:/"; // 홈으로 이동
     }
 
-    
     // 마이페이지
     @GetMapping("/mypage")
     public String myPage(HttpSession session, Model model) {
@@ -102,23 +101,21 @@ public class MemberController {
        // model.addAttribute("posts", loginMember.getPosts());
         model.addAttribute("comments", loginMember.getComments());
         return "myPage"; // templates/myPage.html
-    } 
+    }    
     
     // 회원 수정 POST
     @PostMapping("/mypage/edit")
-    public String udpateMyInfo(@ModelAttribute Member formMember, HttpSession session) {
+    public String updateMyInfo(@ModelAttribute Member formMember, HttpSession session) {
     	Member loginMember = (Member) session.getAttribute("loginMember");
     	if(loginMember == null) {
     		return "redirect:/login";
-    	} 
-    	 
+    	}   	 
         memberService.updateSelf(loginMember.getId(), formMember.getName(),
                                  formMember.getEmail(), formMember.getPassword());      
         // 세션 정보 최신화 
         session.setAttribute("loginMember", memberService.findMemberById(loginMember.getId()));
         return "redirect:/mypage";
-    }
-     
+    }     
 }
 
 /*
