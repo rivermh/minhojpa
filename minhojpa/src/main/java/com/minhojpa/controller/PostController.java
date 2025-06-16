@@ -28,7 +28,11 @@ public class PostController {
 
 	// 게시글 목록
 	@GetMapping("/posts")
-	public String listPosts(Model model) {
+	public String listPosts(Model model, HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		if(loginMember == null) {
+			return "redirect:/login";
+		}
 		List<Post> posts = postService.findAll();
 		model.addAttribute("posts", posts); 
 		return "postList";
@@ -36,7 +40,11 @@ public class PostController {
 
 	// 게시글 작성 폼
 	@GetMapping("/posts/new")
-	public String showCreateForm(Model model) {
+	public String showCreateForm(Model model, HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		if(loginMember == null) {
+			return "redirect:/login";
+		}
 		model.addAttribute("post", new Post()); 
 		return "createPost"; 
 	}
@@ -56,6 +64,11 @@ public class PostController {
 	// 게시글 상세보기
 	@GetMapping("/posts/{id}")
 	public String viewPost(@PathVariable Long id, Model model, HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		if(loginMember == null) {
+			return "redirect:/login";
+		}
+		
 		Post post = postService.findById(id);
 		if (post == null) {
 			return "redirect:/posts";
@@ -72,7 +85,11 @@ public class PostController {
 	
 	//게시글 수정 폼
 	@GetMapping("/posts/{id}/edit")
-	public String showEditForm(@PathVariable Long id, Model model) {
+	public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		if(loginMember == null) {
+			return "redirect:login";
+		}
 		Post post = postService.findById(id);
 		if(post == null) { 
 			return "redirect:/posts"; 
@@ -91,13 +108,13 @@ public class PostController {
 		
 		Post post = postService.findById(id);
 		if(post == null || !post.getWriter().getId().equals(loginMember.getId())) {
+			return "redirect:/posts";
 			// 게시글이 없거나, 작성자가 다르면 수정 못 함
 		}
 		
 		//수정 내용 반영
 		post.setTitle(updatedPost.getTitle());
-		post.setContent(updatedPost.getContent());
-		
+		post.setContent(updatedPost.getContent());		
 		postService.save(post); // save는 수정도 됨 (JPA는 같은 ID면 merge 됨)
 		return "redirect:/posts/" + id;
 	}
@@ -105,8 +122,7 @@ public class PostController {
 	//게시글 삭제 처리하기
 	@PostMapping("/posts/{id}/delete")
 	public String deletePost(@PathVariable Long id, HttpSession session) {
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		
+		Member loginMember = (Member) session.getAttribute("loginMember");	
 		if(loginMember == null) {
 			return "redirect:/login";
 		}
