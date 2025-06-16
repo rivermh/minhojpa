@@ -34,16 +34,16 @@ public class MemberController {
     }
 
     // 홈 페이지
-    @GetMapping("/") // http://localhost:8080/
+    @GetMapping("/") 
     public String home(HttpSession session, Model model) {
     	Member loginMember = (Member) session.getAttribute("loginMember");
     	if(loginMember != null) {
-    		model.addAttribute("loginMember", loginMember); // loginMember라는 이름으로 뷰에 전달
+    		model.addAttribute("loginMember", loginMember);
     	}
-        return "home"; // templates/home.html 반환
+        return "home"; 
     }
 
-    // 전체 회원 조회 (화면용)
+    // 전체 회원 조회
     @GetMapping("/members") // http://localhost:8080/members
     public String getAllMembers(Model model) {
         List<Member> members = memberService.findAllmembers(); // 서비스에서 모든 회원 가져옴
@@ -167,4 +167,9 @@ Member 객체를 만들어서 그걸 formMember 매개변수로 넘겨줌
 view를 반환할때 String를 쓰는이유는 내가 설정한 뷰 이름을 Spring이 ViewResolver를 통해
 내부적으로 HTML로 매핑해서 렌더링해주기 때문에 컨트롤러에서 String을 반환한다.
 */
+
+/*
+getAttribute()는 항상 Object를 반환하므로, 실객체(Member)를 사용하려면 명시적으로 (Member) 형변환을 해줘야 한다.
+* 
+ */
  

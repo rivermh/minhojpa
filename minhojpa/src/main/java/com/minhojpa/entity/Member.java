@@ -68,3 +68,13 @@ public class Member {
 	}
 	
 }
+
+/*
+ DB 쿼리
+ CREATE TABLE member (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,     -- PK, 자동 증가
+    name VARCHAR(255) NOT NULL,               -- 이름, NOT NULL
+    email VARCHAR(255) NOT NULL UNIQUE,       -- 이메일, NOT NULL + UNIQUE (중복 방지)
+    password VARCHAR(255) NOT NULL            -- 비밀번호, NOT NULL
+);
+ */
