@@ -36,7 +36,7 @@ public class Post {
 	private String content;
 	
 	@ManyToOne(fetch = FetchType.LAZY) // 다대일 관계 설정 (여러 게시글이 한 회원에게 작성됨)
-	//Post가 여러개가 한 명의 Member에 속한다는 의미 즉, 게시글 작성자와 연결된다.
+	//여러개의 post가 한 명의 Member에 속한다는 의미 즉, 게시글 작성자와 연결된다.
 	@JoinColumn(name = "member_id") // 외래 키 컬럼 이름 설정
 	private Member writer; // 게시글 작성자 (Member 엔티티와 연결됨)
 	
