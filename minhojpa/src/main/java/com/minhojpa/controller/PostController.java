@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import com.minhojpa.entity.Comment;
 import com.minhojpa.entity.Member;
@@ -28,13 +32,23 @@ public class PostController {
 
 	// 게시글 목록
 	@GetMapping("/posts")
-	public String listPosts(Model model, HttpSession session) {
+	public String listPosts(@RequestParam(defaultValue = "0") int page,
+							Model model,
+							HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		if(loginMember == null) {
 			return "redirect:/login";
 		}
-		List<Post> posts = postService.findAll();
-		model.addAttribute("posts", posts); 
+		
+		Pageable pageable = PageRequest.of(page,  10); //페이지 번호, 사이즈(10개씩)
+		Page<Post> postPage = postService.findAll(pageable); // 수정
+		
+		// List<Post> posts = postService.findAll();
+		// model.addAttribute("posts", posts); 
+		model.addAttribute("postPage", postPage);
+		model.addAttribute("posts", postPage.getContent());//실제 게시글 목록
+		model.addAttribute("currentPage", page); //현재 페이지 번호
+		
 		return "postList";
 	}
 

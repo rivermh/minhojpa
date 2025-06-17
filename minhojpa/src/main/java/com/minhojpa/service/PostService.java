@@ -3,6 +3,8 @@ package com.minhojpa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.minhojpa.entity.Post;
@@ -36,5 +38,10 @@ public class PostService {
 	//게시글 삭제
 	public void deleteById(Long id) {
 		postRepository.deleteById(id);
+	}
+	
+	//페이징 처리
+	public Page<Post> findAll(Pageable pageable){
+		return postRepository.findAll(pageable);
 	}
 }
