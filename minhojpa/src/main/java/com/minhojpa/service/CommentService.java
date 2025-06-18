@@ -30,7 +30,18 @@ public class CommentService {
 		return commentRepository.findByPost(post);
 	}
 	
+	//특정 작성자가 쓴 모든 댓글 조회
 	public List<Comment> findCommentsByWriter(Member member){
 		return commentRepository.findByWriter(member);
+	}
+	
+	//댓글 id 찾기
+	public Comment findById(Long id) {
+		return commentRepository.findById(id).orElse(null);
+	}
+	
+	//댓글 삭제
+	public void deleteById(Long id) {
+		commentRepository.deleteById(id);
 	}
 }

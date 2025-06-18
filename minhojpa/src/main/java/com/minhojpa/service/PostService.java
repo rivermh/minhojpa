@@ -44,4 +44,9 @@ public class PostService {
 	public Page<Post> findAll(Pageable pageable){
 		return postRepository.findAll(pageable);
 	}
+	
+	//검색
+	public Page<Post> searchPosts(String keyword, Pageable pageable){
+		return postRepository.searchByTitleOrContent(keyword, keyword, pageable);
+	}
 }

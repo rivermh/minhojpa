@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>게시글 목록</title>
+<title>게시글 목록</title>
 </head>
 <body>
-    <h1>게시글 목록</h1>
+	<h1>게시글 목록</h1>
 
-    <a th:href="@{/posts/new}">➕ 새 글 쓰기</a>
+	<a th:href="@{/posts/new}">➕ 새 글 쓰기</a>
+	<form th:action="@{/posts}" method="get">
+		<input type="text" name="keyword" th:value="${keyword}"
+			placeholder="제목 또는 내용 검색" />
+		<button type="submit">검색</button>
+	</form>
 
-    <ul>
-        <li th:each="post : ${postPage.content}">
-            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a>
-            <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
-        </li>
-    </ul>
+	<ul>
+		<li th:each="post : ${postPage.content}"><a
+			th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">게시글
+				제목</a> <span
+			th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+		</li>
+	</ul>
 
-    <!-- 페이지 네비게이션 -->
-    <div>
-        <span th:if="${postPage.hasPrevious()}">
-            <a th:href="@{/posts(page=${postPage.number - 1})}">이전</a>
-        </span>
-
-        <span th:text="${postPage.number + 1}">현재 페이지</span>
-
-        <span th:if="${postPage.hasNext()}">
-            <a th:href="@{/posts(page=${postPage.number + 1})}">다음</a>
-        </span>
-    </div>
+	<!-- 페이지 네비게이션 -->
+	<div>
+		<span th:if="${postPage.hasPrevious()}"> <a
+			th:href="@{/posts(page=${postPage.number - 1})}">이전</a>
+		</span> <span th:text="${postPage.number + 1}">현재 페이지</span> <span
+			th:if="${postPage.hasNext()}"> <a
+			th:href="@{/posts(page=${postPage.number + 1})}">다음</a>
+		</span>
+	</div>
 </body>
 </html>

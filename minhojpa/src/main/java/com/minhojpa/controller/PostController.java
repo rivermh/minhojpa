@@ -33,6 +33,7 @@ public class PostController {
 	// 게시글 목록
 	@GetMapping("/posts")
 	public String listPosts(@RequestParam(defaultValue = "0") int page,
+							@RequestParam(required = false) String keyword,
 							Model model,
 							HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
@@ -41,7 +42,16 @@ public class PostController {
 		}
 		
 		Pageable pageable = PageRequest.of(page,  10); //페이지 번호, 사이즈(10개씩)
-		Page<Post> postPage = postService.findAll(pageable); // 수정
+		Page<Post> postPage;
+		// Page<Post> postPage = postService.findAll(pageable); 
+		
+		if(keyword != null&& !keyword.trim().isEmpty()) {
+			//검색어가 있을 경우 검색
+			postPage = postService.searchPosts(keyword, pageable);
+		}else {
+			//검색어가 없으면 전체 목록
+			postPage = postService.findAll(pageable);
+		}
 		
 		// List<Post> posts = postService.findAll();
 		// model.addAttribute("posts", posts); 
