@@ -5,14 +5,27 @@
 </head>
 <body>
     <h1>게시글 목록</h1>
-    
+
     <a th:href="@{/posts/new}">➕ 새 글 쓰기</a>
-    
+
     <ul>
-        <li th:each="post : ${post}">
-            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a> 
+        <li th:each="post : ${postPage.content}">
+            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a>
             <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
         </li>
     </ul>
+
+    <!-- 페이지 네비게이션 -->
+    <div>
+        <span th:if="${postPage.hasPrevious()}">
+            <a th:href="@{/posts(page=${postPage.number - 1})}">이전</a>
+        </span>
+
+        <span th:text="${postPage.number + 1}">현재 페이지</span>
+
+        <span th:if="${postPage.hasNext()}">
+            <a th:href="@{/posts(page=${postPage.number + 1})}">다음</a>
+        </span>
+    </div>
 </body>
 </html>
