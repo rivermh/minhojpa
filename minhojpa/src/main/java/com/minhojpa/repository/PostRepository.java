@@ -10,4 +10,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	// 기본적인 CRUD 메서드 (save, findAll, findById 등)는 자동 제공됨
 	
 	Page<Post> findAll(Pageable pageable); // 기본 페이징 메서드
+	
+	
+	// 검색 기능 추가 
+	Page<Post> searchByTitleOrContent(String title, String content, Pageable pageable);
+
 }
