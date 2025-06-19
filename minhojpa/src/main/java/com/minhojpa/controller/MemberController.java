@@ -68,30 +68,6 @@ public class MemberController {
         return "redirect:/members";
     }
 
-    // 회원 수정 폼 보여주기
-    @GetMapping("/mypage/edit")
-    public String showMyEditForm(HttpSession session, Model model) {
-    	Member loginMember = (Member) session.getAttribute("loginMember");
-    	if(loginMember == null) {
-    		return "redirect:/login";
-    	}
-    	model.addAttribute("member", loginMember); // editMember.html에서 th:field에 바인딩
-    	return "editMember";
-    }
-    
-    // 회원 삭제 처리
-    @PostMapping("/mypage/delete")
-    public String deleteMyAccount(HttpSession session) {
-        Member loginMember = (Member) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return "redirect:/login";
-        }
-
-        memberService.deleteMember(loginMember.getId());
-        session.invalidate(); // 세션 무효화
-        return "redirect:/"; // 홈으로 이동
-    }
-
     // 마이페이지
     @GetMapping("/mypage")
     public String myPage(HttpSession session, Model model) {
@@ -111,6 +87,17 @@ public class MemberController {
         return "myPage"; // templates/myPage.html
     }    
     
+    // 회원 수정 폼 보여주기
+    @GetMapping("/mypage/edit")
+    public String showMyEditForm(HttpSession session, Model model) {
+    	Member loginMember = (Member) session.getAttribute("loginMember");
+    	if(loginMember == null) {
+    		return "redirect:/login";
+    	}
+    	model.addAttribute("member", loginMember); // editMember.html에서 th:field에 바인딩
+    	return "editMember";
+    }
+    
     // 회원 수정 POST
     @PostMapping("/mypage/edit")
     public String updateMyInfo(@ModelAttribute Member formMember, HttpSession session) {
@@ -124,6 +111,20 @@ public class MemberController {
         session.setAttribute("loginMember", memberService.findMemberById(loginMember.getId()));
         return "redirect:/mypage";
     }     
+
+    
+    // 회원 삭제 처리
+    @PostMapping("/mypage/delete")
+    public String deleteMyAccount(HttpSession session) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+
+        memberService.deleteMember(loginMember.getId());
+        session.invalidate(); // 세션 무효화
+        return "redirect:/"; // 홈으로 이동
+    }
 }
 
 /*
