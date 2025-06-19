@@ -59,7 +59,7 @@ public class CommentController {
 			return "redirect:/login";
 
 		Comment comment = commentService.findById(id);
-		if (comment == null || !comment.getWriter().getId().equals(loginMember.getId())) {
+		if (comment == null || !comment.getWriter().getId().equals(loginMember.getId())) { // 여기 equals는 객체값 비교
 			return "redirect:/posts";
 		}
 
@@ -85,7 +85,7 @@ public class CommentController {
 	}
 	
 	//댓글 삭제 처리
-	@PostMapping("/{id}delete")
+	@PostMapping("/{id}/delete")
 	public String deleteComment(@PathVariable Long id, HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		if(loginMember == null) {
