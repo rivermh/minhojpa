@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.minhojpa.entity.Member;
 import com.minhojpa.entity.Post;
 import com.minhojpa.repository.PostRepository;
 
@@ -48,5 +49,10 @@ public class PostService {
 	//검색
 	public Page<Post> searchPosts(String keyword, Pageable pageable){
 		return postRepository.searchByTitleOrContent(keyword, keyword, pageable);
+	}
+	
+	//로그인한 사용자의 게시글 목록
+	public List<Post> findPostsByWriter(Member writer){
+		return postRepository.findByWriter(writer);
 	}
 }

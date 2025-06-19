@@ -55,9 +55,9 @@ public class CommentController {
 	@GetMapping("/{id}/edit")
 	public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
-		if (loginMember == null)
+		if (loginMember == null) {
 			return "redirect:/login";
-
+		}
 		Comment comment = commentService.findById(id);
 		if (comment == null || !comment.getWriter().getId().equals(loginMember.getId())) { // 여기 equals는 객체값 비교
 			return "redirect:/posts";

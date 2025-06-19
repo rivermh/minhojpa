@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.minhojpa.entity.Comment;
 import com.minhojpa.entity.Member;
+import com.minhojpa.entity.Post;
 import com.minhojpa.service.CommentService;
 import com.minhojpa.service.MemberService;
+import com.minhojpa.service.PostService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +28,13 @@ public class MemberController {
 
     private final MemberService memberService;
     private final CommentService commentService;
+    private final PostService postService;
 
     @Autowired // 스프링이 MemberService 빈을 주입해줌 (DI)
-    public MemberController(MemberService memberService, CommentService commentService) {
+    public MemberController(MemberService memberService, CommentService commentService, PostService postService) {
         this.memberService = memberService;
         this.commentService = commentService;
+        this.postService = postService;
     }
 
     // 홈 페이지
@@ -97,9 +101,13 @@ public class MemberController {
         }
         
         List<Comment> comments = commentService.findCommentsByWriter(loginMember);
+        List<Post> posts = postService.findPostsByWriter(loginMember); 
+        
         model.addAttribute("member", loginMember); // 뷰에 전달
        // model.addAttribute("posts", loginMember.getPosts());
         model.addAttribute("comments", loginMember.getComments());
+        model.addAttribute("posts", posts);
+        model.addAttribute("comments", comments);
         return "myPage"; // templates/myPage.html
     }    
     
