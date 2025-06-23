@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller // 이 클래스가 웹 요청을 처리하는 컨트롤러임을 나타냄
 @Slf4j // 로그 출력을 위한 Lombok 어노테이션
-// HTTP 요청 흐름: Controller → Service → Repository → DB → Service → Controller → 응답(View 또는 JSON)
 public class MemberController {
 
     private final MemberService memberService;

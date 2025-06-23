@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.minhojpa.entity.Member;
@@ -13,10 +14,12 @@ import com.minhojpa.repository.MemberRepository;
 public class MemberService {
 	
 	private final MemberRepository memberRepository;
+	private final BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public MemberService(MemberRepository memberRepository) {
+	public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder passwordEncoder) {
 		this.memberRepository = memberRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	// 모든 회원 조회
@@ -35,9 +38,12 @@ public class MemberService {
 		memberRepository.deleteById(id);
 	}
 	
-	// 회원 저장 (비밀번호 암호화 없이)
+	// 회원 저장
 	public Member saveMember(Member member) {
-		return memberRepository.save(member); // 비밀번호 암호화 없이 저장
+		//비밀번호 암호화
+		String encodedPassword = passwordEncoder.encode(member.getPassword());
+		member.setPassword(encodedPassword);
+		return memberRepository.save(member); 
 	}
 	
 	// 마이페이지 회원 수정
@@ -47,7 +53,10 @@ public class MemberService {
 			Member member = optionalMember.get();
 			member.setName(name);
 			member.setEmail(email);
-			member.setPassword(password);
+			
+			//수정시에도 암호화
+			String encodedPassword = passwordEncoder.encode(password);
+			member.setPassword(encodedPassword);
 			memberRepository.save(member);
 		}else {
 			
