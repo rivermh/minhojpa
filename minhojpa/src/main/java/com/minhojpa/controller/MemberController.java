@@ -16,6 +16,7 @@ import com.minhojpa.entity.Member;
 import com.minhojpa.entity.Post;
 import com.minhojpa.service.CommentService;
 import com.minhojpa.service.MemberService;
+import com.minhojpa.service.PostLikeService;
 import com.minhojpa.service.PostService;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,12 +30,17 @@ public class MemberController {
     private final MemberService memberService;
     private final CommentService commentService;
     private final PostService postService;
+    private final PostLikeService postLikeService;
 
     @Autowired // 스프링이 MemberService 빈을 주입해줌 (DI)
-    public MemberController(MemberService memberService, CommentService commentService, PostService postService) {
+    public MemberController(MemberService memberService,
+    						CommentService commentService,
+    						PostService postService,
+    						PostLikeService postLikeService) {
         this.memberService = memberService;
         this.commentService = commentService;
         this.postService = postService;
+        this.postLikeService = postLikeService;
     }
 
     // 홈 페이지
@@ -78,13 +84,13 @@ public class MemberController {
         
         List<Comment> comments = commentService.findCommentsByWriter(loginMember);
         List<Post> posts = postService.findPostsByWriter(loginMember); 
+        List<Post> likedPosts = postLikeService.getLikedPosts(loginMember);
         
         model.addAttribute("member", loginMember); // 뷰에 전달
-       // model.addAttribute("posts", loginMember.getPosts());
-        model.addAttribute("comments", loginMember.getComments());
         model.addAttribute("posts", posts);
         model.addAttribute("comments", comments);
-        return "myPage"; // templates/myPage.html
+        model.addAttribute("likedPosts", likedPosts);
+        return "myPage";
     }    
     
     // 회원 수정 폼 보여주기

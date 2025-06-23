@@ -2,6 +2,8 @@ package com.minhojpa.service;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -39,5 +41,16 @@ public class PostLikeService {
 	
 	public long countLikes(Post post) {
 		return postLikeRepository.countByPost(post);
+	}
+	
+	public List<Post> getLikedPosts(Member member){
+		List<PostLike> likes = postLikeRepository.findByMember(member);
+		List<Post> likedPosts = new ArrayList<>();
+	    
+	    for (PostLike like : likes) {
+	        likedPosts.add(like.getPost());
+	    } 
+	    
+	    return likedPosts;
 	}
 }

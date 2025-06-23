@@ -69,9 +69,10 @@
 			<button type="submit">댓글 작성</button>
 		</form>
 	</div>
-	<form action="/posts/${post.id}/like" method="post">
+	<form th:action="@{'/posts/' + ${post.id} + '/like'}" method="post">
 		<button type="submit" th:text="${liked} ? '♥ 좋아요 취소' : '♡ 좋아요'"></button>
 	</form>
+
 
 	<p>
 		좋아요 수: <span th:text="${likeCount}"></span>
