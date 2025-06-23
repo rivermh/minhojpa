@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import com.minhojpa.entity.Comment;
 import com.minhojpa.entity.Member;
 import com.minhojpa.entity.Post;
+import com.minhojpa.service.PostLikeService;
 import com.minhojpa.service.PostService;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,10 +26,12 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class PostController {
 	private final PostService postService;
+	private final PostLikeService postLikeService;
 
 	@Autowired
-	public PostController(PostService postService) {
+	public PostController(PostService postService, PostLikeService postLikeService) {
 		this.postService = postService;
+		this.postLikeService = postLikeService;
 	}
 
 	// 게시글 목록
@@ -88,23 +92,31 @@ public class PostController {
 	// 게시글 상세보기
 	@GetMapping("/posts/{id}")
 	public String viewPost(@PathVariable Long id, Model model, HttpSession session) {
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		if(loginMember == null) {
-			return "redirect:/login";
-		}
-		
-		Post post = postService.findById(id);
-		if (post == null) {
-			return "redirect:/posts";
-		}
-		
-		//댓글 목록
-		List<Comment> comments = post.getComments(); // 양방향 관계
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) {
+	        return "redirect:/login";
+	    }
 
-		model.addAttribute("post", post);
-		model.addAttribute("comments", comments);
-		model.addAttribute("session", session); 
-		return "postDetail"; 
+	    Post post = postService.findById(id);
+	    if (post == null) {
+	        return "redirect:/posts";
+	    }
+
+	    // 댓글 목록
+	    List<Comment> comments = post.getComments(); // 양방향 관계
+
+	    // 좋아요 여부 & 수 추가
+	    boolean liked = postLikeService.isLikedByMember(loginMember, post);
+	    long likeCount = postLikeService.countLikes(post);
+
+	    // 모델에 담기
+	    model.addAttribute("post", post);
+	    model.addAttribute("comments", comments);
+	    model.addAttribute("liked", liked);
+	    model.addAttribute("likeCount", likeCount);
+	    model.addAttribute("session", session);
+
+	    return "postDetail";
 	}
 	
 	//게시글 수정 폼
@@ -159,4 +171,23 @@ public class PostController {
 		postService.deleteById(id);
 		return "redirect:/posts";
 	}
+	
+	//좋아요
+	@PostMapping("/posts/{postId}/like")
+	public String toggleLike(@PathVariable Long postId, HttpSession session, RedirectAttributes redirectAttributes) {
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		if(loginMember == null) {
+			return "redirect:/login";
+		}
+		
+		Post post  = postService.findById(postId); //기존에 있는 메서드라 가정
+		boolean liked = postLikeService.toggleLike(loginMember, post);
+		redirectAttributes.addFlashAttribute("message", liked ? "종아요 했습니다!" : "좋아요를 취소했습니다.");
+		return "redirect:/posts/" + postId;
+	}
+	
+	
+	
+	
+	
 }

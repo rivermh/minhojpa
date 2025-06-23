@@ -69,6 +69,13 @@
 			<button type="submit">댓글 작성</button>
 		</form>
 	</div>
+	<form action="/posts/${post.id}/like" method="post">
+		<button type="submit" th:text="${liked} ? '♥ 좋아요 취소' : '♡ 좋아요'"></button>
+	</form>
+
+	<p>
+		좋아요 수: <span th:text="${likeCount}"></span>
+	</p>
 	<div th:if="${session.loginMember == null}">
 		<p>
 			<a th:href="@{/login}">로그인</a> 후 댓글을 작성할 수 있습니다.
