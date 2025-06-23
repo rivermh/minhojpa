@@ -40,6 +40,9 @@ public class MemberService {
 	
 	// 회원 저장
 	public Member saveMember(Member member) {
+		if(memberRepository.findByEmail(member.getEmail()).isPresent()) {
+			throw new IllegalStateException("이미 존재하는 이메일입니다.");
+		}
 		//비밀번호 암호화
 		String encodedPassword = passwordEncoder.encode(member.getPassword());
 		member.setPassword(encodedPassword);

@@ -67,11 +67,16 @@ public class MemberController {
     }
 
     // 회원 등록 처리
-    @PostMapping("/members")
-    public String createMember(@ModelAttribute Member member) {
-        memberService.saveMember(member);
-        return "redirect:/members";
-    }
+	@PostMapping("/members")
+	public String createMember(@ModelAttribute Member member, Model model) {
+		try {
+			memberService.saveMember(member);
+			return "redirect:/members";
+		} catch (IllegalStateException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return "createMember";
+		}
+	}
 
     // 마이페이지
     @GetMapping("/mypage")

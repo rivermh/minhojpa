@@ -2,29 +2,84 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>홈페이지</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        p {
+            text-align: center;
+        }
+        @media (max-width: 480px) {
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📌 회원 관리 시스템</h1>
+<div class="container">
+    <h1>📌 회원 관리 시스템</h1>
 
-        <div th:if="${loginMember != null}">
-            <p><strong th:text="${loginMember.name}">회원</strong>님, 환영합니다!</p>
-            <div class="btn-container">
-                <a class="btn" th:href="@{/mypage}">마이페이지</a>
-                <a class="btn" th:href="@{/logout}">로그아웃</a>
-                <a class="btn" th:href="@{/posts}">게시글 목록</a>
-            </div>
-        </div>
-
-        <div th:if="${loginMember == null}">
-            <p>아직 로그인하지 않으셨네요! 아래에서 로그인하거나 회원가입 해주세요.</p>
-            <div class="btn-container">
-                <a class="btn" th:href="@{/login}">로그인</a>
-                <a class="btn" th:href="@{/members/new}">회원가입</a>
-                <a class="btn" th:href="@{/posts}">게시글 목록</a>
-            </div>
+    <div th:if="${loginMember != null}">
+        <p><strong th:text="${loginMember.name}">회원</strong>님, 환영합니다!</p>
+        <div class="btn-container">
+            <a class="btn" th:href="@{/mypage}">마이페이지</a>
+            <a class="btn" th:href="@{/logout}">로그아웃</a>
+            <a class="btn" th:href="@{/posts}">게시글 목록</a>
         </div>
     </div>
+
+    <div th:if="${loginMember == null}">
+        <p>아직 로그인하지 않으셨네요! 아래에서 로그인하거나 회원가입 해주세요.</p>
+        <div class="btn-container">
+            <a class="btn" th:href="@{/login}">로그인</a>
+            <a class="btn" th:href="@{/members/new}">회원가입</a>
+            <a class="btn" th:href="@{/posts}">게시글 목록</a>
+        </div>
+    </div>
+</div>
 </body>
 </html>
