@@ -22,14 +22,14 @@ public class LoginService {
 	}
 
 	/* 이메일과 비밀번호 일치하는 회원 확인 (bcrypt 비교) */
-	public Member login(String email, String rawPassword) {
+	public Member login(String email, String password) {
 		Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
 		if (optionalMember.isPresent()) {
 			Member member = optionalMember.get();
 
 			// 암호화된 비밀번호와 입력값 비교
-			if (passwordEncoder.matches(rawPassword, member.getPassword())) {
+			if (passwordEncoder.matches(password, member.getPassword())) {
 				return member;
 			}
 		}
