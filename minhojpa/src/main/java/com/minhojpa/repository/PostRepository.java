@@ -16,5 +16,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	// 제목 또는 내용으로 검색 
 	Page<Post> searchByTitleOrContent(String title, String content, Pageable pageable);
 	
-	List<Post> findByWriter(Member writer); // 로그인한 사용자의 게시글 조회
+	// 로그인한 사용자의 게시글 조회
+	List<Post> findByWriter(Member writer); 
 }

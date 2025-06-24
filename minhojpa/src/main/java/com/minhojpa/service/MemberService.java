@@ -49,6 +49,12 @@ public class MemberService {
 		return memberRepository.save(member); 
 	}
 	
+	//이메일 존재 여부
+	public boolean existsByEmail(String email) {
+	    return memberRepository.findByEmail(email).isPresent();
+	}
+
+	
 	// 마이페이지 회원 수정
 	public void updateSelf(Long id, String name, String email, String password) {
 		Optional<Member> optionalMember = memberRepository.findById(id);

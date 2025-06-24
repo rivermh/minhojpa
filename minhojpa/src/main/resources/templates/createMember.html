@@ -1,30 +1,215 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>회원가입</title>
+<meta charset="UTF-8" />
+<title>회원가입</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+* {
+	box-sizing: border-box;
+}
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #eef2f7;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
+.form-container {
+	background: white;
+	padding: 2rem;
+	border-radius: 1rem;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 420px;
+}
+h1 {
+	text-align: center;
+	margin-bottom: 1.5rem;
+	color: #333;
+}
+label {
+	display: block;
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid #ccc;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+}
+input[type="submit"] {
+	margin-top: 1.5rem;
+	width: 100%;
+	padding: 0.75rem;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+input[type="submit"]:hover {
+	background-color: #0056b3;
+}
+.error-message {
+	margin-top: 1rem;
+	color: red;
+	text-align: center;
+	font-weight: bold;
+}
+#email-msg {
+	margin-top: 0.3rem;
+	font-weight: bold;
+	text-align: center;
+}
+.password-toggle-btn {
+	margin-top: 0.3rem;
+	background: none;
+	border: none;
+	color: #007bff;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+.password-toggle-btn:hover {
+	text-decoration: underline;
+}
+@media (max-width: 480px) {
+	.form-container {
+		padding: 1.5rem;
+	}
+}
+</style>
+<script>
+function validatePassword() {
+    const pw = document.getElementById("password").value;
+    const msg = document.getElementById("password-msg");
+
+    if (pw.length === 0) {
+        msg.textContent = "";
+        return;
+    }
+
+    if (pw.length >= 6) {
+        msg.textContent = "사용 가능한 비밀번호입니다!";
+        msg.style.color = "green";
+    } else {
+        msg.textContent = "비밀번호는 최소 6자 이상이어야 합니다.";
+        msg.style.color = "red";
+    }
+    // 비밀번호 확인도 같이 검사
+    validatePasswordConfirm();
+}
+
+function validatePasswordConfirm() {
+    const pw = document.getElementById("password").value;
+    const pwConfirm = document.getElementById("passwordConfirm").value;
+    const msg = document.getElementById("passwordConfirm-msg");
+
+    if (pwConfirm.length === 0) {
+        msg.textContent = "";
+        return;
+    }
+
+    if (pw === pwConfirm) {
+        msg.textContent = "입력하신 비밀번호와 일치합니다!";
+        msg.style.color = "green";
+    } else {
+        msg.textContent = "비밀번호가 일치하지 않습니다.";
+        msg.style.color = "red";
+    }
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+async function checkEmailDuplication(email) {
+    const emailMsg = document.getElementById("email-msg");
+
+    if (!email) {
+        emailMsg.textContent = "";
+        return;
+    }
+
+    if (!isValidEmail(email)) {
+        emailMsg.textContent = "올바른 이메일 형식을 입력해주세요.";
+        emailMsg.style.color = "red";
+        return;
+    }
+
+    try {
+        const response = await fetch(`/members/check-email?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+
+        if (data.exists) {
+            emailMsg.textContent = "이미 사용 중인 이메일입니다.";
+            emailMsg.style.color = "red";
+        } else {
+            emailMsg.textContent = "사용 가능한 이메일입니다.";
+            emailMsg.style.color = "green";
+        }
+    } catch (error) {
+        console.error("이메일 중복 체크 실패", error);
+    }
+}
+
+
+
+function togglePasswordVisibility() {
+	const pwInput = document.getElementById("password");
+	const type = pwInput.type === "password" ? "text" : "password";
+	pwInput.type = type;
+	const btn = document.getElementById("toggleBtn");
+	btn.textContent = type === "password" ? "비밀번호 보기" : "비밀번호 숨기기";
+}
+
+function togglePasswordConfirmVisibility() {
+	const pwConfirmInput = document.getElementById("passwordConfirm");
+	const type = pwConfirmInput.type === "password" ? "text" : "password";
+	pwConfirmInput.type = type;
+	const btn = document.getElementById("toggleConfirmBtn");
+	btn.textContent = type === "password" ? "비밀번호 확인 보기" : "비밀번호 확인 숨기기";
+}
+</script>
 </head>
 <body>
-    <div class="form-container">
-        <h1>회원 가입</h1>
+<div class="form-container">
+	<h1>회원 가입</h1>
 
-        <!-- 에러 메시지 출력 영역 -->
-        <div th:if="${errorMessage}" style="color: red; margin-bottom: 10px;">
-            <p th:text="${errorMessage}"></p>
-        </div>
+	<!-- 서버에서 전달된 에러 메시지 -->
+	<div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
 
-        <form th:action="@{/members}" method="post">
-            <label for="name">이름</label>
-            <input type="text" id="name" name="name" required>
+	<form th:action="@{/members}" method="post" onsubmit="return validateRegisterForm()">
+		<label for="name">이름</label>
+		<input type="text" id="name" name="name" required />
 
-            <label for="email">이메일</label>
-            <input type="email" id="email" name="email" required>
+		<label for="email">이메일</label>
+		<input type="email" id="email" name="email" required onblur="checkEmailDuplication(this.value)" />
+		<div id="email-msg"></div>
 
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" required>
-
-            <input type="submit" value="가입하기">
-        </form>
-    </div>
+		<label for="password">비밀번호</label>
+		<input type="password" id="password" name="password" required oninput="validatePassword()" />
+		<div id="password-msg" style="margin-top: 0.3rem; font-weight: bold; text-align: center;"></div>
+		<button type="button" class="password-toggle-btn" id="toggleBtn" onclick="togglePasswordVisibility()">비밀번호 보기</button>
+		
+		<label for="passwordConfirm">비밀번호 확인</label>
+		<input type="password" id="passwordConfirm" name="passwordConfirm" required oninput="validatePasswordConfirm()" />
+		<div id="passwordConfirm-msg" style="margin-top: 0.3rem; font-weight: bold; text-align: center;"></div>
+		<button type="button" class="password-toggle-btn" id="toggleConfirmBtn" onclick="togglePasswordConfirmVisibility()">비밀번호 확인 보기</button>
+		
+		<input type="submit" value="가입하기" />
+	</form>
+</div>
 </body>
 </html>
