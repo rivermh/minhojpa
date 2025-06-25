@@ -1,6 +1,7 @@
 package com.minhojpa.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +45,8 @@ public class MemberController {
 
     // 홈 페이지
     @GetMapping("/") 
-    public String home(HttpSession session, Model model) {
+    public String home(HttpSession session, Model model, Locale locale) {
+    	log.info("현재 요청 locale : " + locale);
     	Member loginMember = (Member) session.getAttribute("loginMember");
     	if(loginMember != null) {
     		model.addAttribute("loginMember", loginMember);
@@ -97,7 +99,7 @@ public class MemberController {
         return "myPage";
     }    
     
-    // 회원 수정 폼 보여주기
+    // 마이체이지 회원수정 폼 보여주기
     @GetMapping("/mypage/edit")
     public String showMyEditForm(HttpSession session, Model model) {
     	Member loginMember = (Member) session.getAttribute("loginMember");
@@ -110,13 +112,13 @@ public class MemberController {
     
     // 회원 수정 POST
     @PostMapping("/mypage/edit")
-    public String updateMyInfo(@ModelAttribute Member formMember, HttpSession session) {
+    public String updateMyInfo(@ModelAttribute Member updateMember, HttpSession session) {
     	Member loginMember = (Member) session.getAttribute("loginMember");
     	if(loginMember == null) {
     		return "redirect:/login";
     	}   	 
-        memberService.updateSelf(loginMember.getId(), formMember.getName(),
-                                 formMember.getEmail(), formMember.getPassword());      
+        memberService.updateSelf(loginMember.getId(), updateMember.getName(),
+        		updateMember.getEmail(), updateMember.getPassword());      
         // 세션 정보 최신화 
         session.setAttribute("loginMember", memberService.findMemberById(loginMember.getId()));
         return "redirect:/mypage";
