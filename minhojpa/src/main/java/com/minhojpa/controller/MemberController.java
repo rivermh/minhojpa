@@ -55,17 +55,17 @@ public class MemberController {
     }
 
     // 전체 회원 조회
-    @GetMapping("/members") // http://localhost:8080/members
+    @GetMapping("/members") 
     public String getAllMembers(Model model) {
-        List<Member> members = memberService.findAllmembers(); // 서비스에서 모든 회원 가져옴
-        model.addAttribute("members", members); // model에 members 데이터 담음
-        return "memberList"; // templates/memberList.html 반환
+        List<Member> members = memberService.findAllmembers(); 
+        model.addAttribute("members", members); 
+        return "memberList"; 
     }
 
     // 회원 등록 폼 보여주기
-    @GetMapping("/members/new") // http://localhost:8080/members/new
+    @GetMapping("/members/new") 
     public String showCreateForm() {
-        return "createMember"; // templates/createMember.html 반환
+        return "createMember"; 
     }
 
     // 회원 등록 처리
