@@ -19,7 +19,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Member {
-	
+	//회원 한 명은 여러 댓글을 작성할 수 있다
+	//외래키는 Comment 엔티티의 writer 필드에 있음(주인이 아님)
+	//이 Member가 저장/삭제될 때 관련 댓글도 같이 저장/삭제됨
+	//이 회원이 쓴 댓글들을 리스트 형태로 저장
+	//nullPointerException 방지를 위해 미리 리스트 초기화
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
 	
@@ -34,6 +38,6 @@ public class Member {
 	private String email;
 	
 	@Column(nullable = false)
-	private String password; // 비밀번호 필드 추가
+	private String password; 
 	
 }

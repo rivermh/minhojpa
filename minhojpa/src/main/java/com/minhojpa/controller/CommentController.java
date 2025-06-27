@@ -42,11 +42,11 @@ public class CommentController {
 			return "redirect:/posts";
 		}
 
-		Comment comment = new Comment();
-		comment.setContent(content);
-		comment.setPost(post);
-		comment.setWriter(loginMember);
-
+		Comment comment = new Comment(); 
+		comment.setContent(content); //댓글 내용 설정
+		comment.setPost(post);  // 어떤 게시글의 댓글인지 설정
+		comment.setWriter(loginMember); // 누가 작성했는지 설정
+	
 		commentService.saveComment(comment);
 		return "redirect:/posts/" + postId;
 	}
