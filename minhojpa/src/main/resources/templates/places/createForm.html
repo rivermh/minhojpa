@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>새 장소 등록</title>
+</head>
+<body>
+    <h1>새 장소 등록</h1>
+    <form th:action="@{/places/new}" th:object="${place}" method="post">
+        <label>장소 이름:</label><br/>
+        <input type="text" th:field="*{name}" required /><br/><br/>
+        
+        <label>카테고리:</label><br/>
+        <input type="text" th:field="*{category}" /><br/><br/>
+        
+        <label>주소:</label><br/>
+        <input type="text" th:field="*{address}" /><br/><br/>
+        
+        <label>지역:</label><br/>
+        <input type="text" th:field="*{region}" /><br/><br/>
+        
+        <label>오픈 시간:</label><br/>
+        <input type="text" th:field="*{openHour}" /><br/><br/>
+        
+        <label>마감 시간:</label><br/>
+        <input type="text" th:field="*{closeHour}" /><br/><br/>
+        
+        <label>위도:</label><br/>
+        <input type="text" th:field="*{latitude}" /><br/><br/>
+        
+        <label>경도:</label><br/>
+        <input type="text" th:field="*{longitude}" /><br/><br/>
+        
+        <label>혼밥 가능 여부:</label>
+        <input type="checkbox" th:field="*{soloFriendly}" /><br/><br/>
+        
+        <label>빨리 나옴 여부:</label>
+        <input type="checkbox" th:field="*{quickServe}" /><br/><br/>
+        
+        <label>눈치 없음 여부:</label>
+        <input type="checkbox" th:field="*{noPressure}" /><br/><br/>
+        
+        <label>자정 이후 운영 여부:</label>
+        <input type="checkbox" th:field="*{openLate}" /><br/><br/>
+        
+        <button type="submit">등록</button>
+    </form>
+    <a th:href="@{/places}">목록으로</a>
+</body>
+</html>

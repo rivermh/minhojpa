@@ -17,7 +17,9 @@ import org.springframework.data.domain.PageRequest;
 
 import com.minhojpa.entity.Comment;
 import com.minhojpa.entity.Member;
+import com.minhojpa.entity.Place;
 import com.minhojpa.entity.Post;
+import com.minhojpa.repository.PlaceRepository;
 import com.minhojpa.service.PostLikeService;
 import com.minhojpa.service.PostService;
 
@@ -27,11 +29,13 @@ import jakarta.servlet.http.HttpSession;
 public class PostController {
 	private final PostService postService;
 	private final PostLikeService postLikeService;
+	private final PlaceRepository placeRepository;
 
 	@Autowired
-	public PostController(PostService postService, PostLikeService postLikeService) {
+	public PostController(PostService postService, PostLikeService postLikeService, PlaceRepository placeRepository) {
 		this.postService = postService;
 		this.postLikeService = postLikeService;
+		this.placeRepository = placeRepository;
 	}
 
 	// 게시글 목록
@@ -66,28 +70,49 @@ public class PostController {
 		return "postList";
 	}
 
-	// 게시글 작성 폼
 	@GetMapping("/posts/new")
-	public String showCreateForm(Model model, HttpSession session) {
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		if(loginMember == null) {
-			return "redirect:/login";
-		}
-		model.addAttribute("post", new Post()); 
-		return "createPost"; 
+	public String showCreateForm(@RequestParam(value = "placeId", required = false) Long placeId,
+	                             Model model, HttpSession session) {
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) {
+	        return "redirect:/login";
+	    }
+
+	    Post post = new Post();
+
+	    if (placeId != null) {
+	        Place place = placeRepository.findById(placeId).orElse(null);
+	        if (place != null) {
+	            post.setPlace(place);
+	        }
+	    }
+
+	    model.addAttribute("post", post);
+	    return "createPost";  // 게시글 작성 폼 뷰 이름
 	}
 
 	// 게시글 작성 처리
 	@PostMapping("/posts")
 	public String createPost(@ModelAttribute Post post, HttpSession session) {
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		if (loginMember == null) {
-			return "redirect:/login";
-		}
-		post.setWriter(loginMember); // post 엔터티에서 바로 값 가져옴 그 안에 loginMember 넣어줌
-		postService.save(post);
-		return "redirect:/posts";
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) {
+	        return "redirect:/login";
+	    }
+
+	    post.setWriter(loginMember);
+
+	    // place가 연관되어있다면 (id만 세팅된 상태)
+	    if (post.getPlace() != null && post.getPlace().getId() != null) {
+	        Place place = placeRepository.findById(post.getPlace().getId()).orElse(null);
+	        post.setPlace(place);
+	    } else {
+	        post.setPlace(null);
+	    }
+
+	    postService.save(post);
+	    return "redirect:/posts";
 	}
+
 
 	// 게시글 상세보기
 	@GetMapping("/posts/{id}")

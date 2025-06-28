@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${place.name} + ' 상세 정보'">장소 상세</title>
+</head>
+<body>
+    <h1 th:text="${place.name}">장소 이름</h1>
+    <p>카테고리: <span th:text="${place.category}">카테고리</span></p>
+    <p>주소: <span th:text="${place.address}">주소</span></p>
+    <p>혼밥 가능: <span th:text="${place.soloFriendly ? '예' : '아니오'}">예/아니오</span></p>
+    <p>눈치 없음: <span th:text="${place.noPressure ? '예' : '아니오'}">예/아니오</span></p>
+    <p>빨리 나옴: <span th:text="${place.quickServe ? '예' : '아니오'}">예/아니오</span></p>
+    <p>자정 이후 운영: <span th:text="${place.openLate ? '예' : '아니오'}">예/아니오</span></p>
+
+    <hr/>
+
+    <h2>리뷰 목록</h2>
+    <div th:if="${posts == null or posts.isEmpty()}">
+        <p>아직 리뷰가 없습니다.</p>
+    </div>
+    <ul>
+        <li th:each="post : ${posts}">
+            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a>
+            <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</span>
+        </li>
+    </ul>
+
+    <a th:href="@{/posts/new(placeId=${place.id})}">➕ 이 장소 리뷰 쓰기</a>
+    <br/><br/>
+    <a th:href="@{/places}">장소 목록으로</a>
+</body>
+</html>

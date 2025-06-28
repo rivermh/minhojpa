@@ -6,19 +6,24 @@
 <body>
     <h1>게시글 작성</h1>
 
-    <form th:action="@{/posts}" method="post" th:object="${post}"> <!-- th:object="${post}" Post 객체 전체를 폼에 바인딩 -->
-        <div>
-            <label>제목</label>
-            <input type="text" th:field="*{title}" required /> <!-- th:field="*{title}" → Post.title 필드와 연결 -->
-        </div>
-        <div>
-            <label>내용</label>
-            <textarea th:field="*{content}" rows="10" cols="50" required></textarea>
-        </div>
-        <div>
-            <button type="submit">작성</button>
-            <a th:href="@{/posts}">목록으로</a>
-        </div>
-    </form>
+   <form th:action="@{/posts}" method="post" th:object="${post}">
+    <div>
+        <label>제목</label>
+        <input type="text" th:field="*{title}" required />
+    </div>
+    <div>
+        <label>내용</label>
+        <textarea th:field="*{content}" rows="10" cols="50" required></textarea>
+    </div>
+    
+    <!-- 장소 ID 숨겨진 필드 추가 -->
+    <input type="hidden" th:if="${post.place != null}" th:field="*{place.id}" />
+    
+    <div>
+        <button type="submit">작성</button>
+        <a th:href="@{/posts}">목록으로</a>
+    </div>
+</form>
+
 </body>
 </html>
