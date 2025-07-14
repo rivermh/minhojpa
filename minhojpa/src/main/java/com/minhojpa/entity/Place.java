@@ -41,6 +41,9 @@ public class Place {
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();  // 해당 장소에 대한 게시글들
     
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+    
     @Column(unique = true)
     private String kakaoPlaceId; // 카카오 API에서의 place_id
 
