@@ -42,7 +42,7 @@ public class Review {
 		this.title = title;
 		this.content = content;
 		this.place = place;
-		this.writer = writer;
+		this.writer = member;
 	}
 	
 	 
