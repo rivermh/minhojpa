@@ -20,7 +20,7 @@ public class CommentService {
 		this.commentRepository = commentRepository;
 	}
 	
-	//댓글 저장
+	//댓글 저장 
 	public void saveComment(Comment comment) {
 		commentRepository.save(comment);
 	}

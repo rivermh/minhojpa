@@ -34,7 +34,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String password,
-                        HttpSession session,
+                        HttpSession session, 
                         Model model) {
         Member loginMember = loginService.login(email, password); 
         // Member 타입 Member 클래스의 객체를 담기 위한 타입
