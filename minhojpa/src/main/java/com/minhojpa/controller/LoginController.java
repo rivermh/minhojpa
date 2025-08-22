@@ -41,7 +41,7 @@ public class LoginController {
         if (loginMember == null) {
             model.addAttribute("loginError", "이메일 또는 비밀번호가 올바르지 않습니다.");
             return "login"; // 로그인 실패 시 로그인 페이지로 돌아감
-        }
+        } 
 
         // 로그인 성공
         session.setAttribute("loginMember", loginMember); // 로그인된 회원을 세션에 저장
