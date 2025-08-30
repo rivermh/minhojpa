@@ -65,7 +65,7 @@ public class CommentController {
 
 		model.addAttribute("comment", comment);
 		return "editComment";
-	}
+	} 
 
 	// 댓글 수정 처리
 	@PostMapping("/{id}/edit")
