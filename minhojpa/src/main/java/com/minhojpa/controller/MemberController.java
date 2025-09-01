@@ -99,7 +99,7 @@ public class MemberController {
         return "myPage";
     }    
     
-    // 마이체이지 회원수정 폼 보여주기
+    // 마이페이지 회원수정 폼 보여주기
     @GetMapping("/mypage/edit")
     public String showMyEditForm(HttpSession session, Model model) {
     	Member loginMember = (Member) session.getAttribute("loginMember");
