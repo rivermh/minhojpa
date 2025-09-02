@@ -41,7 +41,7 @@ public class MemberController {
         this.commentService = commentService;
         this.postService = postService;
         this.postLikeService = postLikeService;
-    }
+    } 
 
     // 홈 페이지
     @GetMapping("/") 
