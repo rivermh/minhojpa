@@ -17,9 +17,7 @@ import org.springframework.data.domain.PageRequest;
 
 import com.minhojpa.entity.Comment;
 import com.minhojpa.entity.Member;
-import com.minhojpa.entity.Place;
 import com.minhojpa.entity.Post;
-import com.minhojpa.repository.PlaceRepository;
 import com.minhojpa.service.PostLikeService;
 import com.minhojpa.service.PostService;
 
@@ -29,13 +27,11 @@ import jakarta.servlet.http.HttpSession;
 public class PostController {
 	private final PostService postService;
 	private final PostLikeService postLikeService;
-	private final PlaceRepository placeRepository;
 
 	@Autowired
-	public PostController(PostService postService, PostLikeService postLikeService, PlaceRepository placeRepository) {
+	public PostController(PostService postService, PostLikeService postLikeService) {
 		this.postService = postService;
 		this.postLikeService = postLikeService;
-		this.placeRepository = placeRepository;
 	}
 
 	// 게시글 목록
@@ -80,13 +76,6 @@ public class PostController {
 
 	    Post post = new Post();
 
-	    if (placeId != null) {
-	        Place place = placeRepository.findById(placeId).orElse(null);
-	        if (place != null) {
-	            post.setPlace(place);
-	        }
-	    }
-
 	    model.addAttribute("post", post);
 	    return "createPost";  // 게시글 작성 폼 뷰 이름
 	}
@@ -100,15 +89,6 @@ public class PostController {
 	    }
 
 	    post.setWriter(loginMember);
-
-	    // place가 연관되어있다면 (id만 세팅된 상태)
-	    if (post.getPlace() != null && post.getPlace().getId() != null) {
-	        Place place = placeRepository.findById(post.getPlace().getId()).orElse(null);
-	        post.setPlace(place);
-	    } else {
-	        post.setPlace(null);
-	    }
-
 	    postService.save(post);
 	    return "redirect:/posts";
 	}

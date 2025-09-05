@@ -19,13 +19,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Member {
-	//회원 한 명은 여러 댓글을 작성할 수 있다
-	//외래키는 Comment 엔티티의 writer 필드에 있음(주인이 아님)
-	//이 Member가 저장/삭제될 때 관련 댓글도 같이 저장/삭제됨
-	//이 회원이 쓴 댓글들을 리스트 형태로 저장
-	//nullPointerException 방지를 위해 미리 리스트 초기화
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
-	private List<Comment> comments = new ArrayList<>();
 	
 	@Id // 기본 키(Primary key) 즉, 기본 키(PK)로 사용될 필드를 지정
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 기본 키 값을 자동 생성하도록 설정 auto_increment처럼 자동 증가
@@ -39,5 +32,13 @@ public class Member {
 	
 	@Column(nullable = false)
 	private String password; 
+	
+	//회원 한 명은 여러 댓글을 작성할 수 있다
+	//외래키는 Comment 엔티티의 writer 필드에 있음(주인이 아님)
+	//이 Member가 저장/삭제될 때 관련 댓글도 같이 저장/삭제됨
+	//이 회원이 쓴 댓글들을 리스트 형태로 저장
+	//nullPointerException 방지를 위해 미리 리스트 초기화
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
 	
 }
