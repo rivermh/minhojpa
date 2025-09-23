@@ -32,7 +32,7 @@ public class MemberController {
     private final PostService postService;
     private final PostLikeService postLikeService;
  
-    @Autowired // 스프링이 MemberService 빈을 주입해줌 (DI)
+    @Autowired // 스프링이 빈을 주입해줌 (DI)
     public MemberController(MemberService memberService,
     						CommentService commentService,
     						PostService postService,
