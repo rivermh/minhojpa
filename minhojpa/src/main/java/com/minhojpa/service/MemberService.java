@@ -72,3 +72,10 @@ public class MemberService {
 		}
 	}
 }
+
+//optional
+//db에서 해당 id의 member가 있으면 optional<member> 안에 감싸서 리턴, 없으면 optional.empty() 반환
+
+//member.orElse(null)
+//값이 있으면 꺼내고, 없으면 null 리턴
+//npe방지를 위해 
