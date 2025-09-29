@@ -46,8 +46,9 @@ public class PostController {
 		}
 		
 		Pageable pageable = PageRequest.of(page,  10); //페이지 번호, 사이즈(10개씩)
-		Page<Post> postPage;
-		// Page<Post> postPage = postService.findAll(pageable); 
+		Page<Post> postPage; // 페이지 정보를 다 담고있는 객체
+		// 몇 번째 페이지를, 몇 개씩 가져올 것인다 (페이지 요청 객체)
+		//pageRequest.of(page, 10) page = 현재 페이지 번호(0부터 시작) 10 = 한 페이지당 몇 개의 게시글을 보여줄지
 		
 		if(keyword != null&& !keyword.trim().isEmpty()) {
 			//검색어가 있을 경우 검색
@@ -56,9 +57,6 @@ public class PostController {
 			//검색어가 없으면 전체 목록
 			postPage = postService.findAll(pageable);
 		}
-		
-		// List<Post> posts = postService.findAll();
-		// model.addAttribute("posts", posts); 
 		model.addAttribute("postPage", postPage);
 		model.addAttribute("posts", postPage.getContent());//실제 게시글 목록
 		model.addAttribute("currentPage", page); //현재 페이지 번호
@@ -73,9 +71,7 @@ public class PostController {
 	    if (loginMember == null) {
 	        return "redirect:/login";
 	    }
-
 	    Post post = new Post();
-
 	    model.addAttribute("post", post);
 	    return "createPost";  // 게시글 작성 폼 뷰 이름
 	}
@@ -88,7 +84,8 @@ public class PostController {
 	        return "redirect:/login";
 	    }
 
-	    post.setWriter(loginMember);
+	    post.setWriter(loginMember); //게시글과 로그인한 사용자를 연결해서 외래키를 채워 넣는 핵심 동작
+	    //현재 로그인한 사용자를 이 게시글의 작성자(writer) 필드에 저장한다
 	    postService.save(post);
 	    return "redirect:/posts";
 	}
