@@ -73,7 +73,7 @@ public class PostController {
 	    }
 	    Post post = new Post();
 	    model.addAttribute("post", post);
-	    return "createPost";  // 게시글 작성 폼 뷰 이름
+	    return "createPost";   // 게시글 작성 폼 뷰 이름
 	}
 
 	// 게시글 작성 처리
