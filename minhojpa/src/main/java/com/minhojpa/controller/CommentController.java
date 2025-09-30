@@ -23,7 +23,7 @@ public class CommentController {
 	private final CommentService commentService;
 	private final PostService postService;
 
-	@Autowired
+	@Autowired 
 	public CommentController(CommentService commentService, PostService postService) {
 		this.commentService = commentService;
 		this.postService = postService;
