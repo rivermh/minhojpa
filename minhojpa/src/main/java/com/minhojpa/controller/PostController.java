@@ -94,6 +94,7 @@ public class PostController {
 	// 게시글 상세보기
 	@GetMapping("/posts/{id}")
 	public String viewPost(@PathVariable Long id, Model model, HttpSession session) {
+		//@PathVariable은 URL 경로의 일부를 메서드 파라미터로 바인딩해주는 어노테이션
 	    Member loginMember = (Member) session.getAttribute("loginMember");
 	    if (loginMember == null) {
 	        return "redirect:/login";
@@ -126,7 +127,7 @@ public class PostController {
 	public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		if(loginMember == null) {
-			return "redirect:login";
+			return "redirect:/login";
 		}
 		Post post = postService.findById(id);
 		if(post == null) { 
