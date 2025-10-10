@@ -59,13 +59,13 @@ public class MemberController {
     public String getAllMembers(Model model) {
         List<Member> members = memberService.findAllmembers(); 
         model.addAttribute("members", members); 
-        return "memberList"; 
+        return "member/memberList"; 
     }
 
     // 회원 등록 폼 보여주기
     @GetMapping("/members/new") 
     public String showCreateForm() {
-        return "createMember"; 
+        return "member/createMember"; 
     }
 
     // 회원 등록 처리
@@ -76,7 +76,7 @@ public class MemberController {
 			return "redirect:/members";
 		} catch (IllegalStateException e) {
 			model.addAttribute("errorMessage", e.getMessage());
-			return "createMember";
+			return "member/createMember";
 		}
 	}
 
@@ -96,7 +96,7 @@ public class MemberController {
         model.addAttribute("posts", posts);
         model.addAttribute("comments", comments);
         model.addAttribute("likedPosts", likedPosts);
-        return "myPage";
+        return "member/myPage";
     }     
      
     // 마이페이지 회원수정 폼 보여주기
@@ -107,7 +107,7 @@ public class MemberController {
     		return "redirect:/login";
     	}
     	model.addAttribute("member", loginMember); // editMember.html에서 th:field에 바인딩
-    	return "editMember";
+    	return "member/editMember";
     }
     
     // 회원 수정 POST

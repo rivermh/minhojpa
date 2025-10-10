@@ -61,7 +61,7 @@ public class PostController {
 		model.addAttribute("posts", postPage.getContent());//실제 게시글 목록
 		model.addAttribute("currentPage", page); //현재 페이지 번호
 		
-		return "postList";
+		return "post/postList";
 	}
 
 	@GetMapping("/posts/new")
@@ -73,7 +73,7 @@ public class PostController {
 	    }
 	    Post post = new Post();
 	    model.addAttribute("post", post);
-	    return "createPost";   // 게시글 작성 폼 뷰 이름
+	    return "post/createPost";   // 게시글 작성 폼 뷰 이름
 	}
 
 	// 게시글 작성 처리
@@ -119,7 +119,7 @@ public class PostController {
 	    model.addAttribute("likeCount", likeCount);
 	    model.addAttribute("session", session);
 
-	    return "postDetail";
+	    return "post/postDetail";
 	}
 	
 	//게시글 수정 폼
@@ -134,7 +134,7 @@ public class PostController {
 			return "redirect:/posts"; 
 		}
 		model.addAttribute("post", post);
-		return "editPost";
+		return "post/editPost";
 	}
 	
 	//게시글 수정 처리하기

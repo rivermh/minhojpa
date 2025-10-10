@@ -27,7 +27,7 @@ public class LoginController {
     // 로그인 폼 화면
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login"; // templates/login.html
+        return "member/login"; 
     }
 
     // 로그인 처리
@@ -40,7 +40,7 @@ public class LoginController {
         // Member 타입 Member 클래스의 객체를 담기 위한 타입
         if (loginMember == null) {
             model.addAttribute("loginError", "이메일 또는 비밀번호가 올바르지 않습니다.");
-            return "login"; // 로그인 실패 시 로그인 페이지로 돌아감
+            return "member/login"; // 로그인 실패 시 로그인 페이지로 돌아감
         } 
 
         // 로그인 성공

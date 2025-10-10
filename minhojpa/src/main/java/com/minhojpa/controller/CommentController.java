@@ -64,7 +64,7 @@ public class CommentController {
 		}
 
 		model.addAttribute("comment", comment);
-		return "editComment";
+		return "comment/editComment";
 	} 
 
 	// 댓글 수정 처리
